@@ -1,16 +1,36 @@
+// - у вас є масив юзрів (до 10), з такими полями наприклад - const users = [
+//     { name: 'olya', gender: 'female', age: 20 }
+//         ...
+// ], вам потрібно написати метод який створює файлики - де назва файлику - це імя вашого юзера (наприклад - Olya.txt),
+// вміст це сам ваш юзер - { name: 'olya', gender: 'female', age: 20 }
+// перед тим створити 4 папки (програмно) - наприклад - manOlder20, manYounger20, womanOlder20, womanYounger20
+// і розподілити ваших юзерів саме по відповідних папках
+
 const fs = require('fs');
 const path = require('path');
 
 console.log(__dirname);
 console.log(__filename);
 
-fs.mkdir (path.join(__dirname,'men'), {recursive: true}, (err)=>{
+fs.mkdir (path.join(__dirname,'manOlder20'), {recursive: true}, (err)=>{
     if (err) {
         console.log(err);
     }
 } );
 
-fs.mkdir (path.join(__dirname,'women'), {recursive: true}, (err)=>{
+fs.mkdir (path.join(__dirname,'manYounger20'), {recursive: true}, (err)=>{
+    if (err) {
+        console.log(err);
+    }
+} );
+
+fs.mkdir (path.join(__dirname,'womanOlder20'), {recursive: true}, (err)=>{
+    if (err) {
+        console.log(err);
+    }
+} );
+
+fs.mkdir (path.join(__dirname,'womanYounger20'), {recursive: true}, (err)=>{
     if (err) {
         console.log(err);
     }
@@ -23,28 +43,47 @@ const users = [
     {name: 'Kolya',  gender: 'male',   age: 18},
     {name: 'Ivan',   gender: 'male',   age: 33},
     {name: 'Jenya',  gender: 'male',   age: 45},
-    {name: 'Max',    gender: 'female', age: 17},
+    {name: 'Max',    gender: 'male', age: 17},
     {name: 'Nadya',  gender: 'female', age: 12},
     {name: 'Oleg',   gender: 'male',   age: 37},
     {name: 'Mariya', gender: 'female', age: 28},
 ];
 
-const men = path.join(__dirname, 'users', 'men');
-const women = path.join(__dirname, 'users', 'women');
+const manOlder20 = path.join(__dirname, 'users', 'manOlder20');
+const manYounger20 = path.join(__dirname, 'users', 'manYounger20');
+const womanOlder20 = path.join(__dirname, 'users', 'womanOlder20');
+const womanYounger20 = path.join(__dirname, 'users', 'womanYounger20');
 
 for (const user of users) {
-    if (user.gender==="male"){
-        fs.writeFile(path.join(__dirname,'men',`${user.name}.txt`), `${user.name}, ${user.gender} ${user.age}`, (err)=>{
+    if (user.age > 20 && user.gender==="male"){
+        fs.writeFile(path.join(__dirname,'manOlder20',`${user.name}.txt`), `${user.name}, ${user.gender}, ${user.age}`, (err)=>{
             if (err){
                 console.log(err);
             }
         })
     }
-     if (user.gender==="female"){
-        fs.writeFile(path.join(__dirname,'women',`${user.name}.txt`), `${user.name}, ${user.gender} ${user.age}`, (err)=>{
+    if (user.age < 20 && user.gender==="male"){
+        fs.writeFile(path.join(__dirname,'manYounger20',`${user.name}.txt`), `${user.name}, ${user.gender}, ${user.age}`, (err)=>{
+            if (err){
+                console.log(err);
+            }
+        })
+    }
+    if (user.age > 20 && user.gender==="female"){
+        fs.writeFile(path.join(__dirname,'womanOlder20',`${user.name}.txt`), `${user.name}, ${user.gender}, ${user.age}`, (err)=>{
+            if (err){
+                console.log(err);
+            }
+        })
+    }
+
+    if (user.age < 20 && user.gender==="female"){
+        fs.writeFile(path.join(__dirname,'womanYounger20',`${user.name}.txt`), `${user.name}, ${user.gender}, ${user.age}`, (err)=>{
             if (err){
                 console.log(err);
             }
         })
     }
 }
+
+
