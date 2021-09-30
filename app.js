@@ -23,7 +23,7 @@ const users = [
     {name: 'Kolya',  gender: 'male',   age: 18},
     {name: 'Ivan',   gender: 'male',   age: 33},
     {name: 'Jenya',  gender: 'male',   age: 45},
-    {name: 'Max',    gender: 'female', age: 17},
+    {name: 'Max',    gender: 'male', age: 17},
     {name: 'Nadya',  gender: 'female', age: 12},
     {name: 'Oleg',   gender: 'male',   age: 37},
     {name: 'Mariya', gender: 'female', age: 28},
