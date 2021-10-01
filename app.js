@@ -9,33 +9,6 @@
 const fs = require('fs');
 const path = require('path');
 
-console.log(__dirname);
-console.log(__filename);
-
-fs.mkdir (path.join(__dirname,'manOlder20'), {recursive: true}, (err)=>{
-    if (err) {
-        console.log(err);
-    }
-} );
-
-fs.mkdir (path.join(__dirname,'manYounger20'), {recursive: true}, (err)=>{
-    if (err) {
-        console.log(err);
-    }
-} );
-
-fs.mkdir (path.join(__dirname,'womanOlder20'), {recursive: true}, (err)=>{
-    if (err) {
-        console.log(err);
-    }
-} );
-
-fs.mkdir (path.join(__dirname,'womanYounger20'), {recursive: true}, (err)=>{
-    if (err) {
-        console.log(err);
-    }
-} );
-
 const users = [
     {name: 'Olya',   gender: 'female', age: 29},
     {name: 'Tonya',  gender: 'female', age: 19},
@@ -43,7 +16,7 @@ const users = [
     {name: 'Kolya',  gender: 'male',   age: 18},
     {name: 'Ivan',   gender: 'male',   age: 33},
     {name: 'Jenya',  gender: 'male',   age: 45},
-    {name: 'Max',    gender: 'male', age: 17},
+    {name: 'Max',    gender: 'male',   age: 17},
     {name: 'Nadya',  gender: 'female', age: 12},
     {name: 'Oleg',   gender: 'male',   age: 37},
     {name: 'Mariya', gender: 'female', age: 28},
@@ -53,6 +26,31 @@ const manOlder20 = path.join(__dirname, 'users', 'manOlder20');
 const manYounger20 = path.join(__dirname, 'users', 'manYounger20');
 const womanOlder20 = path.join(__dirname, 'users', 'womanOlder20');
 const womanYounger20 = path.join(__dirname, 'users', 'womanYounger20');
+
+
+fs.mkdir (path.join(__dirname,'manOlder20'), {recursive: true}, (err)=>{
+    if (err) {
+        console.log(err);
+        return;
+    }
+    fs.mkdir (path.join(__dirname,'manYounger20'), {recursive: true}, (err)=>{
+        if (err) {
+            console.log(err);
+            return;
+        }
+        fs.mkdir (path.join(__dirname,'womanOlder20'), {recursive: true}, (err)=>{
+            if (err) {
+                console.log(err);
+                return;
+            }
+            fs.mkdir (path.join(__dirname,'womanYounger20'), {recursive: true}, (err)=>{
+                if (err) {
+                    console.log(err);
+                }
+            } );
+        } );
+    } );
+} );
 
 for (const user of users) {
     if (user.age > 20 && user.gender==="male"){
