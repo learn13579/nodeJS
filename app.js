@@ -10,15 +10,15 @@ const fs = require('fs');
 const path = require('path');
 
 const users = [
-    {name: 'Olya',   gender: 'female', age: 29},
-    {name: 'Tonya',  gender: 'female', age: 19},
-    {name: 'Solya',  gender: 'female', age: 23},
-    {name: 'Kolya',  gender: 'male',   age: 18},
-    {name: 'Ivan',   gender: 'male',   age: 33},
-    {name: 'Jenya',  gender: 'male',   age: 45},
-    {name: 'Max',    gender: 'male',   age: 17},
-    {name: 'Nadya',  gender: 'female', age: 12},
-    {name: 'Oleg',   gender: 'male',   age: 37},
+    {name: 'Olya', gender: 'female', age: 29},
+    {name: 'Tonya', gender: 'female', age: 19},
+    {name: 'Solya', gender: 'female', age: 23},
+    {name: 'Kolya', gender: 'male', age: 18},
+    {name: 'Ivan', gender: 'male', age: 33},
+    {name: 'Jenya', gender: 'male', age: 45},
+    {name: 'Max', gender: 'male', age: 17},
+    {name: 'Nadya', gender: 'female', age: 12},
+    {name: 'Oleg', gender: 'male', age: 37},
     {name: 'Mariya', gender: 'female', age: 28},
 ];
 
@@ -28,56 +28,56 @@ const womanOlder20 = path.join(__dirname, 'users', 'womanOlder20');
 const womanYounger20 = path.join(__dirname, 'users', 'womanYounger20');
 
 
-fs.mkdir (path.join(__dirname,'manOlder20'), {recursive: true}, (err)=>{
+fs.mkdir(path.join(__dirname, 'manOlder20'), {recursive: true}, (err) => {
     if (err) {
         console.log(err);
         return;
     }
-    fs.mkdir (path.join(__dirname,'manYounger20'), {recursive: true}, (err)=>{
+    fs.mkdir(path.join(__dirname, 'manYounger20'), {recursive: true}, (err) => {
         if (err) {
             console.log(err);
             return;
         }
-        fs.mkdir (path.join(__dirname,'womanOlder20'), {recursive: true}, (err)=>{
+        fs.mkdir(path.join(__dirname, 'womanOlder20'), {recursive: true}, (err) => {
             if (err) {
                 console.log(err);
                 return;
             }
-            fs.mkdir (path.join(__dirname,'womanYounger20'), {recursive: true}, (err)=>{
+            fs.mkdir(path.join(__dirname, 'womanYounger20'), {recursive: true}, (err) => {
                 if (err) {
                     console.log(err);
                 }
-            } );
-        } );
-    } );
-} );
+            });
+        });
+    });
+});
 
 for (const user of users) {
-    if (user.age > 20 && user.gender==="male"){
-        fs.writeFile(path.join(__dirname,'manOlder20',`${user.name}.txt`), `${user.name}, ${user.gender}, ${user.age}`, (err)=>{
-            if (err){
+    if (user.age > 20 && user.gender === "male") {
+        fs.writeFile(path.join(__dirname, 'manOlder20', `${user.name}.txt`), `${user.name}, ${user.gender}, ${user.age}`, (err) => {
+            if (err) {
                 console.log(err);
             }
         })
     }
-    if (user.age < 20 && user.gender==="male"){
-        fs.writeFile(path.join(__dirname,'manYounger20',`${user.name}.txt`), `${user.name}, ${user.gender}, ${user.age}`, (err)=>{
-            if (err){
+    if (user.age < 20 && user.gender === "male") {
+        fs.writeFile(path.join(__dirname, 'manYounger20', `${user.name}.txt`), `${user.name}, ${user.gender}, ${user.age}`, (err) => {
+            if (err) {
                 console.log(err);
             }
         })
     }
-    if (user.age > 20 && user.gender==="female"){
-        fs.writeFile(path.join(__dirname,'womanOlder20',`${user.name}.txt`), `${user.name}, ${user.gender}, ${user.age}`, (err)=>{
-            if (err){
+    if (user.age > 20 && user.gender === "female") {
+        fs.writeFile(path.join(__dirname, 'womanOlder20', `${user.name}.txt`), `${user.name}, ${user.gender}, ${user.age}`, (err) => {
+            if (err) {
                 console.log(err);
             }
         })
     }
 
-    if (user.age < 20 && user.gender==="female"){
-        fs.writeFile(path.join(__dirname,'womanYounger20',`${user.name}.txt`), `${user.name}, ${user.gender}, ${user.age}`, (err)=>{
-            if (err){
+    if (user.age < 20 && user.gender === "female") {
+        fs.writeFile(path.join(__dirname, 'womanYounger20', `${user.name}.txt`), `${user.name}, ${user.gender}, ${user.age}`, (err) => {
+            if (err) {
                 console.log(err);
             }
         })
