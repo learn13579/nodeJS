@@ -1,1 +1,1 @@
-Solya, female 23
+{"name":"Solya", "gender": "female"}

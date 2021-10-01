@@ -1,1 +1,1 @@
-Jenya, male 45
+{"name":"Jenya", "gender": "male"}

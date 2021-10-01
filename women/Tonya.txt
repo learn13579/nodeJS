@@ -1,1 +1,1 @@
-Tonya, female 19
+{"name":"Tonya", "gender": "female"}
