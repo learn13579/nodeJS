@@ -8,7 +8,6 @@ module.exports = {
     },
 
     getUserById: async (req, res) => {
-
         const db = await read();
         const {user_id} = req.params;
         const user = db[user_id - 1];
