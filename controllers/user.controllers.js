@@ -1,16 +1,10 @@
-const path = require('path');
-const fs = require('fs/promises');
-
 const {read, write} = require('../servises/user_servise');
 
 module.exports = {
-
     getUsers: async (req, res) => {
-
         const db = await read();
 
         res.json(db);
-
     },
 
     getUserById: async (req, res) => {
@@ -24,7 +18,6 @@ module.exports = {
     },
 
     createUser: async (req, res) => {
-
         const db = await read();
 
         db.push({...req.body, id: db.length + 1});
@@ -34,7 +27,6 @@ module.exports = {
     },
 
     deleteUser: async (req, res) => {
-
         let db = await read();
 
         const {user_id} = req.params;
