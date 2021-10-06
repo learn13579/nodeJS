@@ -13,7 +13,6 @@ module.exports = {
         const user = db[user_id - 1];
 
         res.json({user});
-
     },
 
     createUser: async (req, res) => {
