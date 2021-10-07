@@ -34,4 +34,4 @@ module.exports = {
 
         res.json(db);
     }
-}
+};
