@@ -1,37 +1,36 @@
-const {read, write} = require('../servises/user_servise');
+const User = require('../dataBase/user');
 
 module.exports = {
     getUsers: async (req, res) => {
-        const db = await read();
+        try {
+            const users = await User.find();
 
-        res.json(db);
+            res.json(users);
+        } catch (e) {
+            res.json(e);
+        }
     },
 
     getUserById: async (req, res) => {
-        const db = await read();
-        const {user_id} = req.params;
-        const user = db[user_id - 1];
+        const { user_id } = req.params;
+        const user = await User.findById(user_id);
 
-        res.json({user});
+        res.json(user);
     },
 
     createUser: async (req, res) => {
-        const db = await read();
+        try {
+            console.log(req.body);
 
-        db.push({...req.body, id: db.length + 1});
-        await write(db);
+            const newUser = await User.create(req.body);
 
-        res.json(db);
+            res.json(newUser);
+        } catch (e) {
+            res.json(e);
+        }
     },
 
-    deleteUser: async (req, res) => {
-        let db = await read();
-
-        const {user_id} = req.params;
-
-        db = db.filter(user => user.id !== +user_id);
-        await write(db);
-
-        res.json(db);
+    updateUser: (req, res) => {
+        res.json('UpDATE USER');
     }
 };
