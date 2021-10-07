@@ -17,8 +17,9 @@ module.exports = {
 
     createUser: async (req, res) => {
         const db = await read();
+        const lastUser = db[db.length - 1];
 
-        db.push({...req.body, id: db.length + 1});
+        db.push({...req.body, id: lastUser + 1});
         await write(db);
 
         res.json(db);
