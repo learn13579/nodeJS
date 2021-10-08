@@ -1,4 +1,4 @@
-const User = require('../dataBase/user');
+const User = require('../dataBase/User');
 
 module.exports = {
     getUsers: async (req, res) => {
@@ -23,21 +23,6 @@ module.exports = {
             const newUser = await User.create(req.body);
 
             res.json(newUser);
-        } catch (e) {
-            res.json(e);
-        }
-    },
-
-    authorizationUser: async (req, res) => {
-        try {
-            const login = await User.findOne({email: req.body.email, password: req.body.password});
-
-            if (!login) {
-                throw new Error('Error, user does not exist');
-            }
-
-            res.json('Congratulations, you have successfully logged in');
-
         } catch (e) {
             res.json(e);
         }

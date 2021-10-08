@@ -1,4 +1,4 @@
-const User = require('../dataBase/user');
+const User = require('../dataBase/User');
 
 module.exports = {
     createUserMiddleware: async (req, res, next) => {
@@ -14,20 +14,4 @@ module.exports = {
             res.json(e.message);
         }
     },
-
-    authorizationUserMiddleware: async (req, res, next) => {
-        try {
-            const userName = await User.findOne({name: req.body.name});
-            const userEmail = await User.findOne({email: req.body.email});
-
-            if (!userEmail || !userName) {
-                throw new Error('login or email failed');
-            }
-
-            next();
-
-        } catch (e) {
-            res.json(e.message);
-        }
-    }
 };
