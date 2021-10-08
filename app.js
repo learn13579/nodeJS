@@ -1,18 +1,20 @@
 const express = require('express');
 const mongoose = require('mongoose');
 
-const app = express();
-
-mongoose.connect('mongodb://localhost:27017/MyBase');
+const {MONGO_URL, PORT} = require('./configs/config');
 
 const userRouter = require('./router/user_router');
+
+const app = express();
+
+mongoose.connect(MONGO_URL);
 
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
 app.use('/user', userRouter);
 
-app.listen(5000, () => {
+app.listen(PORT, () => {
     // eslint-disable-next-line no-console
-    console.log('App listen 5000');
+    console.log(`App listen ${PORT}`);
 });

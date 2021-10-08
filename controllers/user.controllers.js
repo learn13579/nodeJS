@@ -12,7 +12,7 @@ module.exports = {
     },
 
     getUserById: async (req, res) => {
-        const { user_id } = req.params;
+        const {user_id} = req.params;
         const user = await User.findById(user_id);
 
         res.json(user);
@@ -20,8 +20,6 @@ module.exports = {
 
     createUser: async (req, res) => {
         try {
-            console.log(req.body);
-
             const newUser = await User.create(req.body);
 
             res.json(newUser);
@@ -30,7 +28,18 @@ module.exports = {
         }
     },
 
-    updateUser: (req, res) => {
-        res.json('UpDATE USER');
-    }
+    authorizationUser: async (req, res) => {
+        try {
+            const login = await User.findOne({email: req.body.email, password: req.body.password});
+
+            if (!login) {
+                throw new Error('Error, user does not exist');
+            }
+
+            res.json('Congratulations, you have successfully logged in');
+
+        } catch (e) {
+            res.json(e);
+        }
+    },
 };
