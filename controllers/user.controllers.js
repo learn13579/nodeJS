@@ -27,4 +27,15 @@ module.exports = {
             res.json(e);
         }
     },
+
+    deleteUser: async (req, res) => {
+        let db = await read();
+
+        const {user_id} = req.params;
+
+        db = db.filter(user => user.id !== +user_id);
+        await write(db);
+
+        res.json(db);
+    }
 };
