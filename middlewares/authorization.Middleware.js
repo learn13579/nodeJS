@@ -3,15 +3,13 @@ const User = require('../dataBase/User');
 module.exports = {
     authorizationMiddleware: async (req, res, next) => {
         try {
-            const { email, password } = req.body;
+            const {email, password} = req.body;
 
-            const userPassword = await User.findOne({ password });
-            const userEmail = await User.findOne({ email });
-
-            if (!userEmail || !userPassword) {
+            const userEmail = await User.findOne({email});
+            if (!userEmail || userEmail.password !== password) {
                 throw new Error('login or email failed');
             }
-
+            req.user = userEmail;
             next();
 
         } catch (e) {

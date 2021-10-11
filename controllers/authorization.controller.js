@@ -1,10 +1,7 @@
-const User = require('../dataBase/User');
-
 module.exports = {
-    authorizationUser: async (req, res) => {
+    authorizationUser: (req, res) => {
         try {
-            const {email} = req.body.email;
-            const loginUser = await User.findOne({email});
+            const loginUser = req.user;
 
             res.json(loginUser);
 
