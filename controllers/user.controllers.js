@@ -7,15 +7,19 @@ module.exports = {
 
             res.json(users);
         } catch (e) {
-            res.json(e);
+            throw new Error(e.message);
         }
     },
 
     getUserById: async (req, res) => {
-        const {user_id} = req.params;
-        const user = await User.findById(user_id);
+        try {
+            const {user_id} = req.params;
+            const user = await User.findById(user_id);
 
-        res.json(user);
+            res.json(user);
+        } catch (e) {
+            throw new Error(e.message);
+        }
     },
 
     createUser: async (req, res) => {
@@ -23,19 +27,21 @@ module.exports = {
             const newUser = await User.create(req.body);
 
             res.json(newUser);
+
         } catch (e) {
-            res.json(e);
+            throw new Error(e.message);
         }
     },
 
     deleteUser: async (req, res) => {
-        let db = await read();
+        try {
+            const {user_id} = req.params;
+            const deletedUser = await User.findOneAndDelete(user_id);
 
-        const {user_id} = req.params;
+            res.json(`user ${deletedUser} deleted`);
 
-        db = db.filter(user => user.id !== +user_id);
-        await write(db);
-
-        res.json(db);
+        } catch (e) {
+            throw new Error(e.message);
+        }
     }
 };

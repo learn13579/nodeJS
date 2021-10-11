@@ -6,7 +6,7 @@ module.exports = {
             res.json(loginUser);
 
         } catch (e) {
-            res.json(e);
+            throw new Error(e.message);
         }
     },
 };
