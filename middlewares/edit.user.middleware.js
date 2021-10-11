@@ -7,7 +7,7 @@ module.exports = {
 
             const ourUser = await User.findById(user_id);
 
-            if (!ourUser) {
+            if (error) {
 
                 throw new Error(`There is no such user`);
             }

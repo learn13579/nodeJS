@@ -6,9 +6,11 @@ module.exports = {
             const {email, password} = req.body;
 
             const userEmail = await User.findOne({email});
+
             if (!userEmail || userEmail.password !== password) {
                 throw new Error('login or email failed');
             }
+
             req.user = userEmail;
             next();
 
