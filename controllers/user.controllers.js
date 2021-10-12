@@ -1,5 +1,6 @@
 const User = require('../dataBase/User');
 const passwordService = require('../service/password.service');
+const userUtil = require('../util/user.util');
 
 module.exports = {
     getUsers: async (req, res) => {
@@ -7,6 +8,7 @@ module.exports = {
             const users = await User.find();
 
             res.json(users);
+
         } catch (e) {
             res.json(e);
         }
@@ -15,11 +17,16 @@ module.exports = {
     getUserById: async (req, res) => {
         try {
             const {user_id} = req.params;
-            const user = await User.findById(user_id);
+            const user = await User
+                .findById(user_id)
+                .lean();
 
-            res.json(user);
+            const normalizedUser = userUtil.userNormalizer(user);
+
+            res.json(normalizedUser);
+
         } catch (e) {
-            throw new Error(e.message);
+            res.json(e.message);
         }
     },
 
@@ -29,20 +36,33 @@ module.exports = {
             const newUser = await User.create({...req.body, password: hashedPassword});
 
             res.json(newUser);
+
         } catch (e) {
             res.json(e);
+        }
+    },
+
+    updateUser: async (req, res) => {
+        try {
+            const {body, params: {user_id}} = req;
+            await User.findByIdAndUpdate(user_id, body);
+
+            res.json(`User ${user_id} has been updated`);
+
+        } catch (e) {
+            res.json(e.message);
         }
     },
 
     deleteUser: async (req, res) => {
         try {
             const {user_id} = req.params;
-            const deletedUser = await User.findOneAndDelete(user_id);
+            await User.deleteOne({_id: user_id});
 
-            res.json(`user ${deletedUser} deleted`);
+            res.json(`User ${user_id} deleted`);
 
         } catch (e) {
-            throw new Error(e.message);
+            res.json(e.message);
         }
     }
 };

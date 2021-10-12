@@ -23,6 +23,7 @@ const userSchema = new Schema({
         type: String,
         required: true,
         trim: true,
+        select: false,
         minlength: 7
     },
     role: {
