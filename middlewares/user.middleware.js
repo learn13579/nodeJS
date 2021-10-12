@@ -19,6 +19,7 @@ module.exports = {
     userEditMiddleware: async (req, res, next) => {
         try {
             const {user_id} = req.params;
+
             const ourUser = await User.findById(user_id);
 
             if (!ourUser) {
@@ -27,7 +28,6 @@ module.exports = {
 
             req.ourUser = ourUser;
             next();
-
         } catch (e) {
             res.json(e.message);
         }
