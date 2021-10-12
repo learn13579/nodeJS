@@ -16,15 +16,33 @@ const createUserValidator = Joi.object({
         .string()
         .regex(EMAIL_REGEX)
         .required()
-        .trim(),
+        .trim()
+        .min(15),
     password: Joi
         .string()
         .regex(PASSWORD_REGEX)
-        .required(),
+        .required()
+        .trim()
+        .min(10)
+        .max(30),
     role: Joi.string()
         .allow(...Object.values(userRoles)),
 });
 
-module.exports = {
-    createUserValidator
-};
+const updateUserValidator = Joi.object({
+    password: Joi
+        .string()
+        .regex(PASSWORD_REGEX)
+        .required()
+        .trim()
+        .min(10)
+        .max(30),
+    email: Joi
+        .string()
+        .regex(EMAIL_REGEX)
+        .required()
+        .trim()
+        .min(15),
+});
+
+module.exports = {createUserValidator, updateUserValidator};

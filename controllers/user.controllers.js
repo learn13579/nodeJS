@@ -8,7 +8,6 @@ module.exports = {
             const users = await User.find();
 
             res.json(users);
-
         } catch (e) {
             res.json(e);
         }
@@ -24,7 +23,6 @@ module.exports = {
             const normalizedUser = userUtil.userNormalizer(user);
 
             res.json(normalizedUser);
-
         } catch (e) {
             res.json(e.message);
         }
@@ -33,10 +31,10 @@ module.exports = {
     createUser: async (req, res) => {
         try {
             const hashedPassword = await passwordService.hash(req.body.password);
+
             const newUser = await User.create({...req.body, password: hashedPassword});
 
             res.json(newUser);
-
         } catch (e) {
             res.json(e);
         }
@@ -48,7 +46,6 @@ module.exports = {
             await User.findByIdAndUpdate(user_id, body);
 
             res.json(`User ${user_id} has been updated`);
-
         } catch (e) {
             res.json(e.message);
         }
@@ -60,7 +57,6 @@ module.exports = {
             await User.deleteOne({_id: user_id});
 
             res.json(`User ${user_id} deleted`);
-
         } catch (e) {
             res.json(e.message);
         }

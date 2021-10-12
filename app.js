@@ -12,7 +12,7 @@ mongoose.connect(MONGO_URL);
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
-app.use('/user', userRouter);
+app.use('/users', userRouter);
 app.use('/authorization', userRouterAuth);
 
 app.listen(PORT, () => {

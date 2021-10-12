@@ -1,24 +1,11 @@
 const User = require('../dataBase/User');
-const userValidator = require('../validators/user.validator');
+const {createUserValidator, updateUserValidator} = require('../validators/user.validator');
 
 module.exports = {
-    createUserMiddleware: async (req, res, next) => {
-        try {
-            const userEmail = await User.findOne({email: req.body.email});
-
-            if (userEmail) {
-                throw new Error('Email already exist');
-            }
-
-            next();
-        } catch (e) {
-            res.json(e.message);
-        }
-    },
-
-    userEditMiddleware: async (req, res, next) => {
+    userIdMiddleware: async (req, res, next) => {
         try {
             const {user_id} = req.params;
+
             const ourUser = await User.findById(user_id);
 
             if (!ourUser) {
@@ -27,15 +14,14 @@ module.exports = {
 
             req.ourUser = ourUser;
             next();
-
         } catch (e) {
             res.json(e.message);
         }
     },
 
-    isUserValidMiddleware: (req, res, next) => {
+    userValidMiddleware: (req, res, next) => {
         try {
-            const {error, value} = userValidator.createUserValidator.validate(req.body);
+            const {error, value} = createUserValidator.validate(req.body);
 
             if (error) {
                 throw new Error(error.details[0].message);
@@ -46,5 +32,26 @@ module.exports = {
         } catch (e) {
             res.json(e.message);
         }
-    }
+    },
+
+    updateMiddleware: (req, res, next) => {
+        try {
+            const {email, password} = req.body;
+            const {error, value} = updateUserValidator.validate({password});
+
+            if (error) {
+                throw new Error(error.details[0].message);
+            }
+
+            if (email) {
+                throw new Error('You can change your email');
+            }
+
+            req.body = value;
+
+            next();
+        } catch (e) {
+            res.json(e.message);
+        }
+    },
 };
