@@ -13,7 +13,6 @@ module.exports = {
 
             req.user = userEmail;
             next();
-
         } catch (e) {
             res.json(e.message);
         }
