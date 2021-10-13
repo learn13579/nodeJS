@@ -9,7 +9,7 @@ module.exports = {
             const ourUser = await User.findById(user_id);
 
             if (!ourUser) {
-                throw new Error(`login or email failed`);
+                throw new Error('there is no such user');
             }
 
             req.ourUser = ourUser;
@@ -36,18 +36,12 @@ module.exports = {
 
     updateMiddleware: (req, res, next) => {
         try {
-            const {email, password} = req.body;
-            const {error, value} = updateUserValidator.validate({password});
+            const {body} = req.body;
+            const {error} = updateUserValidator.validate({body});
 
             if (error) {
                 throw new Error(error.details[0].message);
             }
-
-            if (email) {
-                throw new Error('login or email failed');
-            }
-
-            req.body = value;
 
             next();
         } catch (e) {

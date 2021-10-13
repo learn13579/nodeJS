@@ -30,19 +30,14 @@ const createUserValidator = Joi.object({
 });
 
 const updateUserValidator = Joi.object({
-    password: Joi
+    name: Joi
         .string()
-        .regex(PASSWORD_REGEX)
-        .required()
+        .alphanum()
+        .min(2)
+        .max(30)
         .trim()
-        .min(10)
-        .max(30),
-    email: Joi
-        .string()
-        .regex(EMAIL_REGEX)
         .required()
-        .trim()
-        .min(15),
+        .lowercase(),
 });
 
 module.exports = {createUserValidator, updateUserValidator};

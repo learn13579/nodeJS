@@ -31,10 +31,11 @@ module.exports = {
     createUser: async (req, res) => {
         try {
             const hashedPassword = await passwordService.hash(req.body.password);
-
             const newUser = await User.create({...req.body, password: hashedPassword});
 
-            res.json(newUser);
+            const normalizedUser = userUtil.userNormalizer(newUser.toObject());
+
+            res.json(normalizedUser);
         } catch (e) {
             res.json(e);
         }
@@ -42,8 +43,8 @@ module.exports = {
 
     updateUser: async (req, res) => {
         try {
-            const {name, params: {user_id}} = req;
-            const newUser = await User.findByIdAndUpdate(user_id, name);
+            const {body, params: {user_id}} = req;
+            const newUser = await User.findByIdAndUpdate(user_id, body, {new: true, runValidators: true});
 
             res.json(newUser);
         } catch (e) {

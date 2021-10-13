@@ -26,7 +26,7 @@ module.exports = {
             const {error} = authValidator.validate(req.body);
 
             if (error) {
-                throw new Error(error.details[0].message);
+                throw new Error('Login or email failed');
             }
 
             next();

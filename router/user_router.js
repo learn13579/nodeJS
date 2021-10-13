@@ -7,7 +7,7 @@ router.get('/', getUsers);
 router.post('/', userValidMiddleware, userIdMiddleware, createUser);
 
 router.get('/:user_id', userValidMiddleware, userIdMiddleware, getUserById);
-router.put('/:user_id', userValidMiddleware, userIdMiddleware, updateMiddleware, updateUser);
+router.put('/:user_id', updateMiddleware, userIdMiddleware, updateUser);
 router.delete('/:user_id', userIdMiddleware, deleteUser);
 
 module.exports = router;
