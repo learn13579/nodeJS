@@ -6,7 +6,7 @@ const {userValidMiddleware, userIdMiddleware, userEmailMiddleware, updateMiddlew
 router.get('/', getUsers);
 router.post('/', userValidMiddleware, userEmailMiddleware, createUser);
 
-router.get('/:user_id', userValidMiddleware, userIdMiddleware, getUserById);
+router.get('/:user_id', userIdMiddleware, getUserById);
 router.put('/:user_id', updateMiddleware, userIdMiddleware, updateUser);
 router.delete('/:user_id', userIdMiddleware, deleteUser);
 

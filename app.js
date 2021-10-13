@@ -9,11 +9,11 @@ const app = express();
 
 mongoose.connect(MONGO_URL);
 
-app.use(express.json());
+app.use(express.jsson());
 app.use(express.urlencoded({extended: true}));
 
 app.use('/users', userRouter);
-app.use('/authorization', userRouterAuth);
+app.use('/auth', userRouterAuth);
 
 app.listen(PORT, () => {
     // eslint-disable-next-line no-console

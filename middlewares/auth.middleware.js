@@ -10,7 +10,7 @@ module.exports = {
             const ourUser = await User.findOne({email}).select('+password');
 
             if (!ourUser) {
-                throw new Error('Login or email failed');
+                throw new Error('LWrong email or password');
             }
 
             await passwordService.compare(password, ourUser.password);
@@ -26,12 +26,26 @@ module.exports = {
             const {error} = authValidator.validate(req.body);
 
             if (error) {
-                throw new Error('Login or email failed');
+                throw new Error('Wrong email or password');
             }
 
             next();
         } catch (e) {
             res.json(e.message);
         }
-    }
+    },
+
+    isMiddleware: async (req, res, next) => {
+        try {
+            const { password } = req.body;
+            const { password: hashPassword } = req.user;
+
+            await passwordService.compare(password, hashPassword);
+
+            next();
+        } catch (e) {
+            res.json(e.message);
+        }
+    },
+
 };
