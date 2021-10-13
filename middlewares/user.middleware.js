@@ -19,6 +19,23 @@ module.exports = {
         }
     },
 
+    userEmailMiddleware: async (req, res, next) => {
+        try {
+            const {email} = req.params;
+
+            const ourUser = await User.find(email);
+
+            if (!ourUser) {
+                throw new Error('such a user already exists');
+            }
+
+            req.ourUser = ourUser;
+            next();
+        } catch (e) {
+            res.json(e.message);
+        }
+    },
+
     userValidMiddleware: (req, res, next) => {
         try {
             const {error, value} = createUserValidator.validate(req.body);
@@ -37,7 +54,7 @@ module.exports = {
     updateMiddleware: (req, res, next) => {
         try {
             const {body} = req.body;
-            const {error} = updateUserValidator.validate({body});
+            const {error} = updateUserValidator.validate(body);
 
             if (error) {
                 throw new Error(error.details[0].message);

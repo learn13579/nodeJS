@@ -36,7 +36,6 @@ const updateUserValidator = Joi.object({
         .min(2)
         .max(30)
         .trim()
-        .required()
         .lowercase(),
 });
 
