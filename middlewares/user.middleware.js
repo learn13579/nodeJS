@@ -9,7 +9,7 @@ module.exports = {
             const ourUser = await User.findById(user_id);
 
             if (!ourUser) {
-                throw new Error(`There is no such user`);
+                throw new Error(`login or email failed`);
             }
 
             req.ourUser = ourUser;
@@ -27,7 +27,7 @@ module.exports = {
                 throw new Error(error.details[0].message);
             }
 
-            console.log(value);
+            req.body = value;
             next();
         } catch (e) {
             res.json(e.message);
@@ -44,7 +44,7 @@ module.exports = {
             }
 
             if (email) {
-                throw new Error('You can change your email');
+                throw new Error('login or email failed');
             }
 
             req.body = value;

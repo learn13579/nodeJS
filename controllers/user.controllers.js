@@ -42,10 +42,10 @@ module.exports = {
 
     updateUser: async (req, res) => {
         try {
-            const {body, params: {user_id}} = req;
-            await User.findByIdAndUpdate(user_id, body);
+            const {name, params: {user_id}} = req;
+            const newUser = await User.findByIdAndUpdate(user_id, name);
 
-            res.json(`User ${user_id} has been updated`);
+            res.json(newUser);
         } catch (e) {
             res.json(e.message);
         }

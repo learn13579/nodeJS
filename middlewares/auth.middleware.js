@@ -10,7 +10,7 @@ module.exports = {
             const ourUser = await User.findOne({email}).select('+password');
 
             if (!ourUser) {
-                throw new Error('login or email failed');
+                throw new Error('Login or email failed');
             }
 
             await passwordService.compare(password, ourUser.password);
