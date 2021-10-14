@@ -1,5 +1,6 @@
 const User = require('../dataBase/User');
 const {createUserValidator, updateUserValidator} = require('../validators/user.validator');
+const {WRONG, NOT_ID, ErrorHandler} = require("../errors");
 
 module.exports = {
     userIdMiddleware: async (req, res, next) => {
@@ -9,13 +10,14 @@ module.exports = {
             const ourUser = await User.findById(user_id);
 
             if (!ourUser) {
-                throw new Error('there is no such user');
+                throw new ErrorHandler(NOT_ID);
+                // throw new Error('there is no such user');
             }
 
             req.ourUser = ourUser;
             next();
         } catch (e) {
-            res.json(e.message);
+            next(e);
         }
     },
 
@@ -25,14 +27,15 @@ module.exports = {
 
             const ourUser = await User.find(email);
 
-            if (!ourUser) {
-                throw new Error('such a user already exists');
+            if (ourUser) {
+                throw new ErrorHandler(WRONG);
+                // throw new Error('such a user already exists');
             }
 
             req.ourUser = ourUser;
             next();
         } catch (e) {
-            res.json(e.message);
+            next(e);
         }
     },
 
@@ -47,7 +50,7 @@ module.exports = {
             req.body = value;
             next();
         } catch (e) {
-            res.json(e.message);
+            next(e);
         }
     },
 
@@ -62,7 +65,7 @@ module.exports = {
 
             next();
         } catch (e) {
-            res.json(e.message);
+            next(e);
         }
     },
 };
