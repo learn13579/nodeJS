@@ -1,6 +1,7 @@
 const User = require('../dataBase/User');
-const {createUserValidator, updateUserValidator} = require('../validators/user.validator');
-const {WRONG, NOT_ID, ErrorHandler} = require("../errors");
+const { userValidator: {createUserValidator, updateUserValidator}} = require('../validators');
+const { ErrorsMsg, ErrorsStatus } = require("../errorsCustom");
+const ErrorHandler = require("../errors/ErrorHandler");
 
 module.exports = {
     userIdMiddleware: async (req, res, next) => {
@@ -10,8 +11,7 @@ module.exports = {
             const ourUser = await User.findById(user_id);
 
             if (!ourUser) {
-                throw new ErrorHandler(NOT_ID);
-                // throw new Error('there is no such user');
+                throw new ErrorHandler(ErrorsMsg.msgNOT_ID, ErrorsStatus.statusNOT_ID);
             }
 
             req.ourUser = ourUser;
@@ -28,8 +28,7 @@ module.exports = {
             const ourUser = await User.find(email);
 
             if (ourUser) {
-                throw new ErrorHandler(WRONG);
-                // throw new Error('such a user already exists');
+                throw new ErrorHandler(ErrorsMsg.msgWRONG, ErrorsStatus.statusWRONG);
             }
 
             req.ourUser = ourUser;

@@ -1,7 +1,7 @@
 const Joi = require('joi');
 
-const {EMAIL_REGEX, PASSWORD_REGEX} = require('../configs/constants');
-const userRoles = require('../configs/user-roles');
+const { Constants:{ PASSWORD_REGEX, EMAIL_REGEX } } = require('../constants');
+const userRoles = require('../constants');
 
 const createUserValidator = Joi.object({
     name: Joi
