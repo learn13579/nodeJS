@@ -4,6 +4,10 @@ module.exports = {
     },
 
     statusNOT_ID: {
-        status: 401
+        status: 404
+    },
+
+    status500: {
+        status: 500
     }
 };

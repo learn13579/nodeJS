@@ -1,7 +1,7 @@
 const User = require('../dataBase/User');
 const passwordService = require('../service/password.service');
-const { authValidator } = require('../validators');
-const { ErrorsMsg, ErrorsStatus } = require("../errorsCustom");
+const {authValidator} = require('../validators');
+const {ErrorsMsg, ErrorsStatus} = require("../errorsCustom");
 const ErrorHandler = require("../errors/ErrorHandler");
 
 module.exports = {
@@ -17,6 +17,7 @@ module.exports = {
 
             await passwordService.compare(password, ourUser.password);
 
+            req.ourUser = ourUser;
             next();
         } catch (e) {
             next(e);

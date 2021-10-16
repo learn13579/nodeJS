@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 
+require('dotenv').config();
 const {MONGO_URL, PORT} = require('./configs/config');
 const {authRouter, userRouter} = require('./router');
 
@@ -22,6 +23,7 @@ app.use('*', (err, req, res, next) => {
 });
 
 app.listen(PORT, () => {
+    console.log(process.env);
     // eslint-disable-next-line no-console
     console.log(`App listen ${PORT}`);
 });

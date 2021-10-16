@@ -15,14 +15,9 @@ module.exports = {
 
     getUserById: async (req, res, next) => {
         try {
-            const {user_id} = req.params;
-            const user = await User
-                .findById(user_id)
-                .lean();
+            const {user} = req;
 
-            const normalizedUser = userUtil.userNormalizer(user);
-
-            res.json(normalizedUser);
+            res.json(user);
         } catch (e) {
             next(e);
         }
@@ -30,8 +25,10 @@ module.exports = {
 
     createUser: async (req, res, next) => {
         try {
-            const hashedPassword = await passwordService.hash(req.body.password);
-            const newUser = await User.create({...req.body, password: hashedPassword});
+            const {body, body: {password}} = req;
+
+            const hashedPassword = await passwordService.hash(password);
+            const newUser = await User.create({...body, password: hashedPassword});
 
             const normalizedUser = userUtil.userNormalizer(newUser.toObject());
 

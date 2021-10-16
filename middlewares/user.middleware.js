@@ -1,6 +1,6 @@
 const User = require('../dataBase/User');
-const { userValidator: {createUserValidator, updateUserValidator}} = require('../validators');
-const { ErrorsMsg, ErrorsStatus } = require("../errorsCustom");
+const {userValidator: {createUserValidator, updateUserValidator}} = require('../validators');
+const {ErrorsMsg, ErrorsStatus} = require("../errorsCustom");
 const ErrorHandler = require("../errors/ErrorHandler");
 
 module.exports = {
@@ -25,7 +25,7 @@ module.exports = {
         try {
             const {email} = req.params;
 
-            const ourUser = await User.find(email);
+            const ourUser = await User.findOne({email});
 
             if (ourUser) {
                 throw new ErrorHandler(ErrorsMsg.msgWRONG, ErrorsStatus.statusWRONG);
@@ -43,7 +43,7 @@ module.exports = {
             const {error, value} = createUserValidator.validate(req.body);
 
             if (error) {
-                throw new Error(error.details[0].message);
+                throw new ErrorHandler(error.details[0].message, ErrorsStatus.status500);
             }
 
             req.body = value;
@@ -55,11 +55,11 @@ module.exports = {
 
     updateMiddleware: (req, res, next) => {
         try {
-            const {body} = req.body;
+            const {body} = req;
             const {error} = updateUserValidator.validate(body);
 
             if (error) {
-                throw new Error(error.details[0].message);
+                throw new ErrorHandler(error.details[0].message, ErrorsStatus.status500);
             }
 
             next();

@@ -27,6 +27,7 @@ module.exports = {
         'dot-notation': 'error',
         'eol-last': 'error',
         eqeqeq: 'error',
+
         'guard-for-in': 'off',
         'global-require': 'off',
         indent: [
@@ -124,6 +125,11 @@ module.exports = {
             'error',
             'as-needed'
         ],
+        quotes:
+            [
+                'error',
+                'single'
+            ],
         radix: 'error',
         'require-await': 'error',
         'sort-imports': [
