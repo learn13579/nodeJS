@@ -1,6 +1,7 @@
-const router = require('express').Router();
+const router = require('express')
+    .Router();
 
-const {userControllers: {getUsers, getUserById, createUser, updateUser, deleteUser}} = require('../controllers');
+const {userControllers: {getUsers, getUserById, createUser, updateUser, deleteAccount}} = require('../controllers');
 const {
     userMiddleware: {
         userValidMiddleware,
@@ -15,6 +16,6 @@ router.post('/', userValidMiddleware, userEmailMiddleware, createUser);
 
 router.get('/:user_id', userIdMiddleware, getUserById);
 router.put('/:user_id', updateMiddleware, userIdMiddleware, updateUser);
-router.delete('/:user_id', userIdMiddleware, deleteUser);
+router.delete('/:user_id', userIdMiddleware, deleteAccount);
 
 module.exports = router;

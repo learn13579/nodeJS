@@ -1,5 +1,5 @@
-const User = require('../dataBase/User');
-const passwordService = require('../service/password.service');
+const {User} = require('../dataBase');
+const {passwordService} = require('../service');
 const userUtil = require('../util/user.util');
 
 module.exports = {
@@ -49,7 +49,7 @@ module.exports = {
         }
     },
 
-    deleteUser: async (req, res, next) => {
+    deleteAccount: async (req, res, next) => {
         try {
             const {user_id} = req.params;
             await User.deleteOne({_id: user_id});

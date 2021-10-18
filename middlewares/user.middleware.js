@@ -1,7 +1,7 @@
 const User = require('../dataBase/User');
 const {userValidator: {createUserValidator, updateUserValidator}} = require('../validators');
-const {ErrorsMsg, ErrorsStatus} = require("../errorsCustom");
-const ErrorHandler = require("../errors/ErrorHandler");
+const {ErrorsMsg, ErrorsStatus} = require('../errorsCustom');
+const ErrorHandler = require('../errors/ErrorHandler');
 
 module.exports = {
     userIdMiddleware: async (req, res, next) => {
@@ -59,6 +59,20 @@ module.exports = {
 
             if (error) {
                 throw new ErrorHandler(error.details[0].message, ErrorsStatus.status400);
+            }
+
+            next();
+        } catch (e) {
+            next(e);
+        }
+    },
+
+    checkUserRole: (roleArr = []) => (req, res, next) => {
+        try {
+            const {role} = req.ourUser;
+
+            if (!roleArr.includes(role)) {
+                throw new ErrorHandler(ErrorsMsg.msgAccessDenied);
             }
 
             next();
