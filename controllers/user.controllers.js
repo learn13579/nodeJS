@@ -15,9 +15,9 @@ module.exports = {
 
     getUserById: async (req, res, next) => {
         try {
-            const {user} = req;
+            const {ourUser} = req;
 
-            res.json(user);
+            res.json(ourUser);
         } catch (e) {
             next(e);
         }

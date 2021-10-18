@@ -8,7 +8,7 @@ const authValidator = Joi.object({
         .regex(EMAIL_REGEX)
         .required()
         .alphanum()
-        .min(15),
+        .min(7),
     password: Joi
         .string()
         .regex(PASSWORD_REGEX)

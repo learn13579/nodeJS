@@ -2,12 +2,12 @@ const express = require('express');
 const mongoose = require('mongoose');
 
 require('dotenv').config();
-const {MONGO_URL, PORT} = require('./configs/config');
+const {MONGO_CONNECT_URL, PORT} = require('./configs/config');
 const {authRouter, userRouter} = require('./router');
 
 const app = express();
 
-mongoose.connect(MONGO_URL);
+mongoose.connect(MONGO_CONNECT_URL);
 
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
@@ -23,7 +23,5 @@ app.use('*', (err, req, res, next) => {
 });
 
 app.listen(PORT, () => {
-    console.log(process.env);
-    // eslint-disable-next-line no-console
     console.log(`App listen ${PORT}`);
 });

@@ -23,15 +23,14 @@ module.exports = {
 
     userEmailMiddleware: async (req, res, next) => {
         try {
-            const {email} = req.params;
+            const {email} = req.body;
 
-            const ourUser = await User.findOne({email});
+            const emailUser = await User.findOne({email});
 
-            if (ourUser) {
-                throw new ErrorHandler(ErrorsMsg.msgWRONG, ErrorsStatus.statusWRONG);
+            if (emailUser) {
+                throw new ErrorHandler(ErrorsMsg.msgEmailExist, ErrorsStatus.status400);
             }
 
-            req.ourUser = ourUser;
             next();
         } catch (e) {
             next(e);
@@ -43,7 +42,7 @@ module.exports = {
             const {error, value} = createUserValidator.validate(req.body);
 
             if (error) {
-                throw new ErrorHandler(error.details[0].message, ErrorsStatus.status500);
+                throw new ErrorHandler(error.details[0].message, ErrorsStatus.status400);
             }
 
             req.body = value;
@@ -59,7 +58,7 @@ module.exports = {
             const {error} = updateUserValidator.validate(body);
 
             if (error) {
-                throw new ErrorHandler(error.details[0].message, ErrorsStatus.status500);
+                throw new ErrorHandler(error.details[0].message, ErrorsStatus.status400);
             }
 
             next();

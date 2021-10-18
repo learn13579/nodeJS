@@ -7,15 +7,13 @@ const ErrorHandler = require("../errors/ErrorHandler");
 module.exports = {
     isAuthMiddleware: async (req, res, next) => {
         try {
-            const {email, password} = req.body;
+            const {email} = req.body;
 
-            const ourUser = await User.findOne({email}).select('+password');
+            const ourUser = await User.findOne({email}).select('+password').lean();
 
             if (!ourUser) {
-                throw new ErrorHandler(ErrorsMsg.msgWRONG, ErrorsStatus.statusWRONG);
+                throw new ErrorHandler(ErrorsMsg.msgWRONG, ErrorsStatus.status400);
             }
-
-            await passwordService.compare(password, ourUser.password);
 
             req.ourUser = ourUser;
             next();
@@ -24,13 +22,11 @@ module.exports = {
         }
     },
 
-    isLoginValid: (req, res, next) => {
+    isLoginValid: async (req, res, next) => {
         try {
-            const {error} = authValidator.validate(req.body);
+            const {body, ourUser} = req;
 
-            if (error) {
-                throw new ErrorHandler(ErrorsMsg.msgWRONG, ErrorsStatus.statusWRONG);
-            }
+            await passwordService.compare(body.password, ourUser.password);
 
             next();
         } catch (e) {

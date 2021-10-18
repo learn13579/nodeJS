@@ -17,7 +17,7 @@ const createUserValidator = Joi.object({
         .regex(EMAIL_REGEX)
         .required()
         .trim()
-        .min(15),
+        .min(7),
     password: Joi
         .string()
         .regex(PASSWORD_REGEX)
