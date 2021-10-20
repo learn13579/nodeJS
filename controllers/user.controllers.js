@@ -1,7 +1,9 @@
-const {User} = require('../dataBase');
-const {passwordService, emailService} = require('../service');
+const {User, Action} = require('../dataBase');
+const {passwordService, emailService, jwtService} = require('../service');
 const userUtil = require('../util/user.util');
 const {emailActionsEnum: {WELCOME}} = require('../constants');
+const {tokenActionEnum} = require('../constants');
+const {ErrorsStatus: {status201, status204}} = require('../errorsCustom');
 
 module.exports = {
     getUsers: async (req, res, next) => {
@@ -29,14 +31,18 @@ module.exports = {
             const {body, body: {password}} = req;
 
             const hashedPassword = await passwordService.hash(password);
-
-            await emailService.sendMail(req.body.email, WELCOME, {userName: req.body.name});
-
             const newUser = await User.create({...body, password: hashedPassword});
 
             const normalizedUser = userUtil.userNormalizer(newUser.toObject());
 
-            res.json(normalizedUser);
+            const token = jwtService.createActionToken();
+
+            await Action.create({token, type: tokenActionEnum, user_id: normalizedUser._id});
+            await emailService.sendMail(req.body.email, WELCOME, {userName: req.body.name, token});
+
+            res
+                .json(newUser)
+                .sendStatus(status201);
         } catch (e) {
             next(e);
         }
@@ -47,7 +53,9 @@ module.exports = {
             const {body, params: {user_id}} = req;
             const newUser = await User.findByIdAndUpdate(user_id, body, {new: true, runValidators: true});
 
-            res.json(newUser);
+            res
+                .json(newUser)
+                .sendStatus(status201);
         } catch (e) {
             next(e);
         }
@@ -58,7 +66,7 @@ module.exports = {
             const {user_id} = req.params;
             await User.deleteOne({_id: user_id});
 
-            res.json(`User ${user_id} deleted`);
+            res.sendStatus(status204);
         } catch (e) {
             next(e);
         }

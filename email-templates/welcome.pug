@@ -1,5 +1,7 @@
 extends container
 block content
-    p Привіт, #{userName}
+    p Привіт, #{name}
     p Раді тебе бачити
-
+    p Щоб активувати акаунт перейди за
+    br
+    a(href=`http://localhost:5000/auth/activate/${token}`) посиланням.
