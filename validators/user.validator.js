@@ -29,14 +29,4 @@ const createUserValidator = Joi.object({
         .allow(...Object.values(userRoles)),
 });
 
-const updateUserValidator = Joi.object({
-    name: Joi
-        .string()
-        .alphanum()
-        .min(2)
-        .max(30)
-        .trim()
-        .lowercase(),
-});
-
-module.exports = {createUserValidator, updateUserValidator};
+module.exports = {createUserValidator};

@@ -11,7 +11,7 @@ module.exports = {
             const ourUser = await User.findById(user_id);
 
             if (!ourUser) {
-                throw new ErrorHandler(ErrorsMsg.msgNOT_ID, ErrorsStatus.statusNOT_ID);
+                throw new ErrorHandler(ErrorsMsg.msgNOT_ID, ErrorsStatus.status404);
             }
 
             req.ourUser = ourUser;
@@ -29,36 +29,6 @@ module.exports = {
 
             if (emailUser) {
                 throw new ErrorHandler(ErrorsMsg.msgEmailExist, ErrorsStatus.status400);
-            }
-
-            next();
-        } catch (e) {
-            next(e);
-        }
-    },
-
-    userValidMiddleware: (req, res, next) => {
-        try {
-            const {error, value} = createUserValidator.validate(req.body);
-
-            if (error) {
-                throw new ErrorHandler(error.details[0].message, ErrorsStatus.status400);
-            }
-
-            req.body = value;
-            next();
-        } catch (e) {
-            next(e);
-        }
-    },
-
-    updateMiddleware: (req, res, next) => {
-        try {
-            const {body} = req;
-            const {error} = updateUserValidator.validate(body);
-
-            if (error) {
-                throw new ErrorHandler(error.details[0].message, ErrorsStatus.status400);
             }
 
             next();

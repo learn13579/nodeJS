@@ -42,7 +42,7 @@ module.exports = {
 
             const {password} = req.body;
             const {password: hashPassword} = req.ourUser;
-            console.log(req.ourUser);
+
             await passwordService.compare(password, hashPassword);
 
             next();

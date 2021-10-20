@@ -1,6 +1,7 @@
 const {User} = require('../dataBase');
 const {passwordService} = require('../service');
 const userUtil = require('../util/user.util');
+const {ErrorsStatus: {status201, status204}} = require('../errorsCustom');
 
 module.exports = {
     getUsers: async (req, res, next) => {
@@ -32,7 +33,9 @@ module.exports = {
 
             const normalizedUser = userUtil.userNormalizer(newUser.toObject());
 
-            res.json(normalizedUser);
+            res
+                .json(normalizedUser)
+                .sendStatus(status201);
         } catch (e) {
             next(e);
         }
@@ -43,7 +46,8 @@ module.exports = {
             const {body, params: {user_id}} = req;
             const newUser = await User.findByIdAndUpdate(user_id, body, {new: true, runValidators: true});
 
-            res.json(newUser);
+            res.json(newUser)
+                .sendStatus(status201);
         } catch (e) {
             next(e);
         }
@@ -54,7 +58,7 @@ module.exports = {
             const {user_id} = req.params;
             await User.deleteOne({_id: user_id});
 
-            res.json(`User ${user_id} deleted`);
+            res.sendStatus(status204);
         } catch (e) {
             next(e);
         }

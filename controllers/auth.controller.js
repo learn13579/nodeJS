@@ -1,6 +1,7 @@
 const {User, O_Auth} = require('../dataBase');
 const {userNormalizer} = require('../util/user.util');
 const {jwtService} = require('../service');
+const {ErrorsStatus: {status205}} = require('../errorsCustom');
 
 module.exports = {
     authUser: async (req, res, next) => {
@@ -27,9 +28,11 @@ module.exports = {
 
     logoutUser: async (req, res, next) => {
         try {
-            const users = await User.find();
+            const {ourUser} = req;
 
-            res.json(users);
+            await O_Auth.deleteOne({user: ourUser._id});
+
+            res.sendStatus(status205);
         } catch (e) {
             next(e);
         }
