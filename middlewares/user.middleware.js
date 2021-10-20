@@ -37,36 +37,6 @@ module.exports = {
         }
     },
 
-    userValidMiddleware: (req, res, next) => {
-        try {
-            const {error, value} = createUserValidator.validate(req.body);
-
-            if (error) {
-                throw new ErrorHandler(error.details[0].message, status400);
-            }
-
-            req.body = value;
-            next();
-        } catch (e) {
-            next(e);
-        }
-    },
-
-    updateMiddleware: (req, res, next) => {
-        try {
-            const {body} = req;
-            const {error} = updateUserValidator.validate(body);
-
-            if (error) {
-                throw new ErrorHandler(error.details[0].message, status400);
-            }
-
-            next();
-        } catch (e) {
-            next(e);
-        }
-    },
-
     checkUserRole: (roleArr = []) => (req, res, next) => {
         try {
             const {role} = req.ourUser;

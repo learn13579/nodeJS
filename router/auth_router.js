@@ -3,7 +3,7 @@ const router = require('express')
 
 const {authController: {authUser, logoutUser}} = require('../controllers');
 const {
-    authMiddleware: {isAuthMiddleware, isLoginValid, isPasswordsMatched, checkRefreshToken},
+    authMiddleware: {isAuthMiddleware, isLoginValid, isPasswordsMatched, checkRefreshToken, checkAccessToken},
     userMiddleware: {checkUserRole}
 } = require('../middlewares');
 
@@ -14,7 +14,7 @@ router.post('/', isAuthMiddleware, isLoginValid, checkUserRole([
     USER
 ]), isPasswordsMatched, authUser);
 
-router.post('/logout', logoutUser);
+router.post('/logout', checkAccessToken, logoutUser);
 
 router.post('/refresh', checkRefreshToken, authUser);
 
