@@ -1,6 +1,6 @@
 const User = require('../dataBase/User');
 const {userValidator: {createUserValidator, updateUserValidator}} = require('../validators');
-const {ErrorsMsg, ErrorsStatus} = require('../errorsCustom');
+const {ErrorsMsg: {msgNOT_ID, msgEmailExist, msgAccessDenied}, ErrorsStatus: {status400, status404}} = require('../errorsCustom');
 const ErrorHandler = require('../errors/ErrorHandler');
 
 module.exports = {
@@ -11,7 +11,7 @@ module.exports = {
             const ourUser = await User.findById(user_id);
 
             if (!ourUser) {
-                throw new ErrorHandler(ErrorsMsg.msgNOT_ID, ErrorsStatus.statusNOT_ID);
+                throw new ErrorHandler(msgNOT_ID, status404);
             }
 
             req.ourUser = ourUser;
@@ -28,7 +28,7 @@ module.exports = {
             const emailUser = await User.findOne({email});
 
             if (emailUser) {
-                throw new ErrorHandler(ErrorsMsg.msgEmailExist, ErrorsStatus.status400);
+                throw new ErrorHandler(msgEmailExist, status400);
             }
 
             next();
@@ -42,7 +42,7 @@ module.exports = {
             const {error, value} = createUserValidator.validate(req.body);
 
             if (error) {
-                throw new ErrorHandler(error.details[0].message, ErrorsStatus.status400);
+                throw new ErrorHandler(error.details[0].message, status400);
             }
 
             req.body = value;
@@ -58,7 +58,7 @@ module.exports = {
             const {error} = updateUserValidator.validate(body);
 
             if (error) {
-                throw new ErrorHandler(error.details[0].message, ErrorsStatus.status400);
+                throw new ErrorHandler(error.details[0].message, status400);
             }
 
             next();
@@ -72,7 +72,7 @@ module.exports = {
             const {role} = req.ourUser;
 
             if (!roleArr.includes(role)) {
-                throw new ErrorHandler(ErrorsMsg.msgAccessDenied);
+                throw new ErrorHandler(msgAccessDenied);
             }
 
             next();

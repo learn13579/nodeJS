@@ -4,5 +4,6 @@ module.exports = {
     msgEmailExist: 'Email already exists',
     msgInvalidToken: 'Invalid token',
     msgNoToken: 'No token',
-    msgAccessDenied: 'Access denied'
+    msgAccessDenied: 'Access denied',
+    msgWrongTemplateName: 'Wrong template name',
 };

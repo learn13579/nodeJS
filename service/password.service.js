@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt');
 
-const {ErrorsMsg, ErrorsStatus} = require('../errorsCustom');
+const {ErrorsMsg: {msgWRONG}, ErrorsStatus: {status400}} = require('../errorsCustom');
 const ErrorHandler = require('../errors/ErrorHandler');
 
 module.exports = {
@@ -10,7 +10,7 @@ module.exports = {
         const isPasswordMatched = await bcrypt.compare(password, hashPassword);
 
         if (!isPasswordMatched) {
-            throw new ErrorHandler(ErrorsMsg.msgWRONG, ErrorsStatus.status400);
+            throw new ErrorHandler(msgWRONG, status400);
         }
     },
 };

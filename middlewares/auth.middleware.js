@@ -1,7 +1,7 @@
 const User = require('../dataBase/User');
 const {Constants: {AUTHORIZATION}, tokenTypeEnum: {REFRESH}} = require('../constants');
 const {passwordService, jwtService} = require('../service');
-const {ErrorsMsg, ErrorsStatus} = require('../errorsCustom');
+const {ErrorsMsg: {msgWRONG, msgNoToken, msgInvalidToken}, ErrorsStatus: {status400, status401}} = require('../errorsCustom');
 const ErrorHandler = require('../errors/ErrorHandler');
 const {O_Auth} = require('../dataBase');
 
@@ -15,7 +15,7 @@ module.exports = {
                 .lean();
 
             if (!ourUser) {
-                throw new ErrorHandler(ErrorsMsg.msgWRONG, ErrorsStatus.status400);
+                throw new ErrorHandler(msgWRONG, status400);
             }
 
             req.ourUser = ourUser;
@@ -42,7 +42,7 @@ module.exports = {
 
             const {password} = req.body;
             const {password: hashPassword} = req.ourUser;
-            console.log(req.ourUser);
+
             await passwordService.compare(password, hashPassword);
 
             next();
@@ -56,7 +56,7 @@ module.exports = {
             const token = req.get(AUTHORIZATION);
 
             if (!token) {
-                throw new ErrorHandler(ErrorsMsg.msgNoToken, ErrorsStatus.status401);
+                throw new ErrorHandler(msgNoToken, status401);
             }
 
             await jwtService.verifyToken(token);
@@ -66,7 +66,7 @@ module.exports = {
                 .populate('user_id');
 
             if (!tokenResponse) {
-                throw new ErrorHandler(ErrorsMsg.msgInvalidToken, ErrorsStatus.status401);
+                throw new ErrorHandler(msgInvalidToken, status401);
             }
 
             req.user = tokenResponse.user_id;
@@ -82,7 +82,7 @@ module.exports = {
             const token = req.get(AUTHORIZATION);
 
             if (!token) {
-                throw new ErrorHandler(ErrorsMsg.msgNoToken, ErrorsStatus.status401);
+                throw new ErrorHandler(msgNoToken, status401);
             }
 
             await jwtService.verifyToken(token, REFRESH);
@@ -92,7 +92,7 @@ module.exports = {
                 .populate('user_id');
 
             if (!tokenResponse) {
-                throw new ErrorHandler(ErrorsMsg.msgInvalidToken, ErrorsStatus.status401);
+                throw new ErrorHandler(msgInvalidToken, status401);
             }
 
             await O_Auth.remove({refresh_token: token});

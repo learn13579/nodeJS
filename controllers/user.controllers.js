@@ -1,6 +1,7 @@
 const {User} = require('../dataBase');
-const {passwordService} = require('../service');
+const {passwordService, emailService} = require('../service');
 const userUtil = require('../util/user.util');
+const {emailActionsEnum: {WELCOME}} = require('../constants');
 
 module.exports = {
     getUsers: async (req, res, next) => {
@@ -28,6 +29,9 @@ module.exports = {
             const {body, body: {password}} = req;
 
             const hashedPassword = await passwordService.hash(password);
+
+            await emailService.sendMail(req.body.email, WELCOME, {userName: req.body.name});
+
             const newUser = await User.create({...body, password: hashedPassword});
 
             const normalizedUser = userUtil.userNormalizer(newUser.toObject());
