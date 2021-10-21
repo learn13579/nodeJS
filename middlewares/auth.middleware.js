@@ -1,9 +1,8 @@
-const User = require('../dataBase/User');
+const {O_Auth, User} = require('../dataBase');
 const {Constants: {AUTHORIZATION}, tokenTypeEnum: {REFRESH}} = require('../constants');
 const {passwordService, jwtService} = require('../service');
 const {ErrorsMsg: {msgWRONG, msgNoToken, msgInvalidToken}, ErrorsStatus: {status400, status401}} = require('../errorsCustom');
-const ErrorHandler = require('../errors/ErrorHandler');
-const {O_Auth} = require('../dataBase');
+const {ErrorHandler} = require('../errors');
 
 module.exports = {
     isAuthMiddleware: async (req, res, next) => {
@@ -70,7 +69,6 @@ module.exports = {
             }
 
             req.user = tokenResponse.user_id;
-
             next();
         } catch (e) {
             next(e);
@@ -98,7 +96,6 @@ module.exports = {
             await O_Auth.remove({refresh_token: token});
 
             req.user = tokenResponse.user_id;
-
             next();
         } catch (e) {
             next(e);
