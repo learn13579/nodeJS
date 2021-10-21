@@ -1,5 +1,5 @@
-const {ErrorsMsg, ErrorsStatus} = require('../errorsCustom');
-const ErrorHandler = require('../errors/ErrorHandler');
+const {ErrorsStatus} = require('../errorsCustom');
+const {ErrorHandler} = require('../errors');
 
 module.exports = {
     ValidMiddleware: (valid) => (req, res, next) => {

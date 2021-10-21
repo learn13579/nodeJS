@@ -1,5 +1,4 @@
-const User = require('../dataBase/User');
-const {userValidator: {createUserValidator, updateUserValidator}} = require('../validators');
+const { User } = require('../dataBase');
 const {ErrorsMsg: {msgNOT_ID, msgEmailExist, msgAccessDenied}, ErrorsStatus: {status400, status404}} = require('../errorsCustom');
 const ErrorHandler = require('../errors/ErrorHandler');
 
