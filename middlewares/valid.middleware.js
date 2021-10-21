@@ -2,7 +2,7 @@ const {ErrorsMsg, ErrorsStatus} = require('../errorsCustom');
 const ErrorHandler = require('../errors/ErrorHandler');
 
 module.exports = {
-    ValidMiddleware: (valid) => (req, res, next) => {
+    isValidMiddleware: (valid) => (req, res, next) => {
         try {
             const {error} = valid.validate(req.body);
 
