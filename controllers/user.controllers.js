@@ -1,7 +1,7 @@
-const {User, Action} = require('../dataBase');
+const {User, Action, O_Auth} = require('../dataBase');
 const {passwordService, emailService, jwtService} = require('../service');
 const userUtil = require('../util/user.util');
-const {emailActionsEnum: {WELCOME}} = require('../constants');
+const {emailActionsEnum: {WELCOME, DELETED}} = require('../constants');
 const {tokenActionEnum} = require('../constants');
 const {ErrorsStatus: {status201, status204}} = require('../errorsCustom');
 
@@ -64,7 +64,12 @@ module.exports = {
     deleteAccount: async (req, res, next) => {
         try {
             const {user_id} = req.params;
+            const {name, email} = req.body;
+
             await User.deleteOne({_id: user_id});
+            O_Auth.deleteOne({_id: user_id});
+
+            await emailService.sendMail(email, DELETED, {userName: name});
 
             res.sendStatus(status204);
         } catch (e) {

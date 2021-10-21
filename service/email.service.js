@@ -5,6 +5,7 @@ const path = require('path');
 const {MY_EMAIL, MY_EMAIL_PASSWORD} = require('../configs/config');
 const allTemplates = require('../email-templates');
 const {ErrorsMsg: {msgWrongTemplateName}} = require('../errorsCustom');
+const ErrorHandler = require('../errors/ErrorHandler');
 
 const templateParser = new EmailTemplates({
     views: {
@@ -24,13 +25,13 @@ const sendMail = async (userMail, emailAction, context = {}) => {
     const templateInfo = allTemplates[emailAction];
 
     if (!templateInfo) {
-        throw new Error(msgWrongTemplateName);
+        throw new ErrorHandler(msgWrongTemplateName);
     }
 
     const html = await templateParser.render(templateInfo.templateName, context);
 
     return transporter.sendMail({
-        from: 'No reply, Maryana',
+        from: 'No reply',
         to: userMail,
         subject: templateInfo.subject,
         html
