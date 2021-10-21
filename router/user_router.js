@@ -8,13 +8,13 @@ const {
     userMiddleware: {userIdMiddleware, userEmailMiddleware, checkUserRole}
 } = require('../middlewares');
 const {userRoles} = require('../constants');
-const {userValidator, updateValidator} = require('../validators');
+const {userValidator:{createUserValidator}, updateValidator:{updateUserValidator}} = require('../validators');
 
 router.get('/', getUsers);
-router.post('/', validMiddleware.isValidMiddleware(userValidator), userEmailMiddleware, createUser);
+router.post('/', validMiddleware.isValidMiddleware(createUserValidator), userEmailMiddleware, createUser);
 
 router.get('/:user_id', userIdMiddleware, getUserById);
-router.put('/:user_id', validMiddleware.isValidMiddleware(updateValidator), checkAccessToken, userIdMiddleware, updateUser);
+router.put('/:user_id', validMiddleware.isValidMiddleware(updateUserValidator), checkAccessToken, userIdMiddleware, updateUser);
 router.delete('/:user_id', checkAccessToken, checkUserRole([userRoles.ADMIN]), deleteAccount);
 
 module.exports = router;

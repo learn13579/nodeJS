@@ -69,7 +69,7 @@ module.exports = {
             await User.deleteOne({_id: user_id});
             O_Auth.deleteOne({_id: user_id});
 
-            await emailService.sendMail(email, DELETED, {userName: name});
+            await emailService.sendMail(email, DELETED, name);
 
             res.sendStatus(status204);
         } catch (e) {
