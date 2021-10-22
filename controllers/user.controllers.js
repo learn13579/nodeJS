@@ -1,6 +1,5 @@
 const {User, ActionToken, O_Auth} = require('../dataBase');
 const {emailService, jwtService} = require('../service');
-const userUtil = require('../util/user.util');
 const {emailActionsEnum: {WELCOME, DELETED}} = require('../constants');
 const {tokenActionEnum} = require('../constants');
 const {ErrorsStatus: {status201, status204}} = require('../errorsCustom');
