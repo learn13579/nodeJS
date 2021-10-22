@@ -1,9 +1,9 @@
 const jwt = require('jsonwebtoken');
 
-const ErrorHandler = require('../errors/ErrorHandler');
-const {tokenTypeEnum: {ACCESS}} = require('../constants');
+const {ErrorHandler} = require('../errors');
+const {tokenTypeEnum: {ACCESS}, tokenActionEnum: {FORGOT_PASSWORD}} = require('../constants');
 const {JWT_ACCESS_SECRET, JWT_REFRESH_SECRET, JWT_ACTION_SECRET} = require('../configs/config');
-const {ErrorsMsg, ErrorsStatus} = require('../errorsCustom');
+const {ErrorsMsg: {msgInvalidToken, msgWrongTokenType}, ErrorsStatus: {status401, status500}} = require('../errorsCustom');
 
 module.exports = {
     generateTokenPair: () => {
@@ -22,11 +22,21 @@ module.exports = {
 
             await jwt.verify(token, secret);
         } catch (e) {
-            throw new ErrorHandler(ErrorsMsg.msgInvalidToken, ErrorsStatus.status401);
+            throw new ErrorHandler(msgInvalidToken, status401);
         }
     },
 
-    createActionToken: () => {
-       return jwt.sign({}, JWT_ACTION_SECRET, {expiresIn: '1d'});
+    generateActionToken: (actionTokenType) => {
+        let secretWord;
+
+        switch (actionTokenType) {
+            case FORGOT_PASSWORD:
+                secretWord = JWT_ACTION_SECRET;
+                break;
+            default:
+                throw new ErrorHandler(msgWrongTokenType, status500);
+        }
+
+        return jwt.sign({}, JWT_ACTION_SECRET, {expiresIn: '24h'});
     }
 };

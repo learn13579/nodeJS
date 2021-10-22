@@ -11,7 +11,6 @@ module.exports = {
 
             const ourUser = await User.findOne({email})
                 .select('+password')
-                .lean();
 
             if (!ourUser) {
                 throw new ErrorHandler(msgWRONG, status400);

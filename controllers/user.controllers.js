@@ -1,5 +1,5 @@
-const {User, Action, O_Auth} = require('../dataBase');
-const {passwordService, emailService, jwtService} = require('../service');
+const {User, ActionToken, O_Auth} = require('../dataBase');
+const {emailService, jwtService} = require('../service');
 const userUtil = require('../util/user.util');
 const {emailActionsEnum: {WELCOME, DELETED}} = require('../constants');
 const {tokenActionEnum} = require('../constants');
@@ -28,16 +28,11 @@ module.exports = {
 
     createUser: async (req, res, next) => {
         try {
-            const {body, body: {password}} = req;
+            const newUser = await User.createUserWithHashPassword(req.body);
 
-            const hashedPassword = await passwordService.hash(password);
-            const newUser = await User.create({...body, password: hashedPassword});
+            const token = jwtService.generateActionToken();
 
-            const normalizedUser = userUtil.userNormalizer(newUser.toObject());
-
-            const token = jwtService.createActionToken();
-
-            await Action.create({token, type: tokenActionEnum, user_id: normalizedUser._id});
+            await ActionToken.create({token, type: tokenActionEnum, user_id: newUser._id});
             await emailService.sendMail(req.body.email, WELCOME, {userName: req.body.name, token});
 
             res

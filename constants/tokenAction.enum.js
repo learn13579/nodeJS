@@ -1,3 +1,4 @@
 module.exports = {
-    ACTION: 'action'
+    ACTION: 'action',
+    FORGOT_PASSWORD: 'forgot_password'
 };

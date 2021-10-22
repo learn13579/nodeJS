@@ -2,7 +2,7 @@ const {Schema, model} = require('mongoose');
 
 const {tokenActionEnum} = require('../constants');
 
-const actionSchema = new Schema({
+const actionTokenSchema = new Schema({
     token: {
         type: String,
         required: true,
@@ -19,6 +19,6 @@ const actionSchema = new Schema({
         ref: 'user'
     },
 
-}, {timestamps: true});
+}, {timestamps: true, toObject: {virtuals: true}, toJSON: {virtuals: true}});
 
-module.exports = model('action', actionSchema);
+module.exports = model('action', actionTokenSchema);

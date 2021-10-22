@@ -12,7 +12,8 @@ const {userRoles: {ADMIN, USER}} = require('../constants');
 router.post('/', isAuthMiddleware, isLoginValid, checkUserRole([
     ADMIN,
     USER
-]), isPasswordsMatched, authUser);
+]),
+    authUser);
 
 router.post('/logout', checkAccessToken, logoutUser);
 
