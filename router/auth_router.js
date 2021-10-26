@@ -1,19 +1,31 @@
 const router = require('express')
     .Router();
 
-const {authController: {authUser, logoutUser}} = require('../controllers');
+const {authController: {authUser, logoutUser, changePassword}} = require('../controllers');
 const {
-    authMiddleware: {isAuthMiddleware, isLoginValid, isPasswordsMatched, checkRefreshToken, checkAccessToken},
+    validMiddleware: {isValidMiddleware},
+    authMiddleware: {isAuthMiddleware, isLoginValid, isPasswordsMatched, checkRefreshToken, checkAccessToken, checkActionToken},
     userMiddleware: {checkUserRole}
 } = require('../middlewares');
 
 const {userRoles: {ADMIN, USER}} = require('../constants');
+const {
+    // userValidator: {createUserValidator},
+    // updateValidator: {updateUserValidator},
+    forgotPasswordValidator: {passwordValidator},
+    emailUserValidator: {emailValidator}
+} = require('../validators');
+
+const {tokenActionEnum: {ACTION, FORGOT_PASSWORD}} = require("../constants");
 
 router.post('/', isAuthMiddleware, isLoginValid, checkUserRole([
     ADMIN,
     USER
 ]),
     authUser);
+
+router.put('/forgotPassword', isValidMiddleware(emailValidator),  );
+router.put('/changePassword', isValidMiddleware(passwordValidator), checkActionToken(FORGOT_PASSWORD), changePassword);
 
 router.post('/logout', checkAccessToken, logoutUser);
 

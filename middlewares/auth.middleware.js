@@ -1,4 +1,4 @@
-const {O_Auth, User} = require('../dataBase');
+const {O_Auth, User, ActionToken} = require('../dataBase');
 const {Constants: {AUTHORIZATION}, tokenTypeEnum: {REFRESH, ACCESS}} = require('../constants');
 const {passwordService, jwtService} = require('../service');
 const {ErrorsMsg: {msgWRONG, msgNoToken, msgInvalidToken}, ErrorsStatus: {status400, status401}} = require('../errorsCustom');
@@ -94,6 +94,31 @@ module.exports = {
             await O_Auth.remove({refresh_token: token});
 
             req.user = tokenResponse.user_id;
+            next();
+        } catch (e) {
+            next(e);
+        }
+    },
+
+    checkActionToken: (actionTokenType) => async (req, res, next) => {
+        try {
+            const token = req.get(AUTHORIZATION);
+
+            if (!token) {
+                throw new ErrorHandler(msgNoToken, status401);
+            }
+
+            await jwtService.verifyToken(token, actionTokenType);
+
+            const tokenResponseAction = await ActionToken.findOne({token});
+
+            if (!tokenResponseAction) {
+                throw new ErrorHandler(msgInvalidToken, status401);
+            }
+
+            await ActionToken.deleteOne({token});
+
+            req.user = tokenResponseAction.user_id;
             next();
         } catch (e) {
             next(e);

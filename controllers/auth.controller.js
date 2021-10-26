@@ -1,9 +1,12 @@
 const {User, O_Auth, ActionToken} = require('../dataBase');
-const {UserNormalizer:{userNormalizer}} = require('../util');
+const {UserNormalizer: {userNormalizer}} = require('../util');
 const {jwtService, emailService} = require('../service');
 const {ErrorHandler} = require('../errors');
-const {ErrorsStatus: {status205, status404}, ErrorsMsg:{msgUserNotFound, msgGood, msgOK}} = require('../errorsCustom');
-const {Constants:{AUTHORIZATION}, emailActionsEnum, tokenActionEnum} = require("../constants");
+const {
+    ErrorsStatus: {status201, status205, status404},
+    ErrorsMsg: {msgUserNotFound, msgGood, msgOK}
+} = require('../errorsCustom');
+const {Constants: {AUTHORIZATION}, emailActionsEnum, tokenActionEnum} = require('../constants');
 const {HOST_URL} = require('../configs/config');
 
 module.exports = {
@@ -86,7 +89,7 @@ module.exports = {
             await emailService.sendMail(
                 email,
                 emailActionsEnum.FORGOT_PASSWORD,
-                { forgotPasswordUrl: `${HOST_URL}/passwordForgot?token=${actionToken}`});
+                {forgotPasswordUrl: `${HOST_URL}/auth/passwordForgot/${actionToken}`});
 
             res.json(msgOK);
         } catch (e) {
@@ -99,6 +102,24 @@ module.exports = {
             const actionToken = req.get(AUTHORIZATION);
 
             res.json(msgGood);
+        } catch (e) {
+            next(e);
+        }
+    },
+
+    changePassword: async (req, res, next) => {
+        try {
+            const {newPassword, ourUser: {_id, name, email}} = req.body;
+
+            await O_Auth.deleteMany({user: _id});
+
+            await User.updatePassword(_id, newPassword);
+
+            await emailService.sendMail(
+                email, emailActionsEnum.CHANGE_PASSWORD, {userName: name}
+            );
+
+            res.sendStatus(status201);
         } catch (e) {
             next(e);
         }
