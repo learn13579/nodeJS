@@ -4,6 +4,7 @@ const {jwtService, emailService} = require('../service');
 const {ErrorHandler} = require('../errors');
 const {ErrorsStatus: {status205, status404}, ErrorsMsg:{msgUserNotFound, msgGood, msgOK}} = require('../errorsCustom');
 const {Constants:{AUTHORIZATION}, emailActionsEnum, tokenActionEnum} = require("../constants");
+const {HOST_URL} = require('../configs/config');
 
 module.exports = {
     authUser: async (req, res, next) => {
@@ -85,7 +86,7 @@ module.exports = {
             await emailService.sendMail(
                 email,
                 emailActionsEnum.FORGOT_PASSWORD,
-                { forgotPasswordUrl: `http://localhost:3000/passwordForgot?token=${actionToken}`});
+                { forgotPasswordUrl: `${HOST_URL}/passwordForgot?token=${actionToken}`});
 
             res.json(msgOK);
         } catch (e) {

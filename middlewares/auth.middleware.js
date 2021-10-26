@@ -1,5 +1,5 @@
 const {O_Auth, User} = require('../dataBase');
-const {Constants: {AUTHORIZATION}, tokenTypeEnum: {REFRESH}} = require('../constants');
+const {Constants: {AUTHORIZATION}, tokenTypeEnum: {REFRESH, ACCESS}} = require('../constants');
 const {passwordService, jwtService} = require('../service');
 const {ErrorsMsg: {msgWRONG, msgNoToken, msgInvalidToken}, ErrorsStatus: {status400, status401}} = require('../errorsCustom');
 const {ErrorHandler} = require('../errors');
@@ -9,8 +9,7 @@ module.exports = {
         try {
             const {email} = req.body;
 
-            const ourUser = await User.findOne({email})
-                .select('+password')
+            const ourUser = await User.findOne({email});
 
             if (!ourUser) {
                 throw new ErrorHandler(msgWRONG, status400);
@@ -57,7 +56,7 @@ module.exports = {
                 throw new ErrorHandler(msgNoToken, status401);
             }
 
-            await jwtService.verifyToken(token);
+            await jwtService.verifyToken(token, ACCESS);
 
             const tokenResponse = await O_Auth
                 .findOne({access_token: token})

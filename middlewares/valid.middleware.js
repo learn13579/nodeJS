@@ -1,5 +1,5 @@
 const {ErrorHandler} = require('../errors');
-const {ErrorsStatus} = require('../errorsCustom');
+const {ErrorsStatus: {status400}} = require('../errorsCustom');
 
 module.exports = {
     isValidMiddleware: (valid) => (req, res, next) => {
@@ -7,7 +7,7 @@ module.exports = {
             const {error} = valid.validate(req.body);
 
             if (error) {
-                throw new ErrorHandler(error.details[0].message, ErrorsStatus.status400);
+                throw new ErrorHandler(error.details[0].message, status400);
             }
 
             next();
