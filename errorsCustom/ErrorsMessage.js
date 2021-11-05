@@ -8,6 +8,7 @@ module.exports = {
     msgAccessDenied: 'Access denied',
     msgWrongTemplateName: 'Wrong template name',
     msgUserNotFound:'User not found',
+    msgCorsIsNotAllowed: 'Cors is not allowed',
     msgGood: 'Good',
-    msgOK: 'Ok',
+    msgOK: 'Ok'
 };
